@@ -9,7 +9,7 @@ botocore==1.31.19
 
 # Django
 # ------------------------------------------------------------------------------
-django-storages[boto3]==1.8  # https://github.com/jschneier/django-storages
+django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
 django-anymail[mailgun]==7.0.0  # https://github.com/anymail/django-anymail
 
 djangorestframework==3.14.0
