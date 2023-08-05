@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
+from django.shortcuts import render
 
 User = get_user_model()
 
@@ -74,18 +75,21 @@ class UserDetail(APIView):
     
     def put(self, request, user_id):
         model = User.objects.get(id = user_id)
-        serializer = Userserializer(data = request.data)
+        serializer = Userserializer(data = request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)  
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, user_id):
         model = User.objects.get(id = user_id)
         model.delete()
-        return Response(status=status.HTTP_204_NO_CONENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 
 def main(request):
-    pass
+    return render(request, 'users/user_detail.html')
+
+def index(request):
+    return render(request, 'users/user_detail.html')

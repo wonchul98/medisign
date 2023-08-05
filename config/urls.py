@@ -10,12 +10,12 @@ urlpatterns = [
 
     
     # /
-    path("", include("medisign.users.urls", namespace="users")),
+    #path("", include("medisign.users.urls", namespace="users")),
 
     # /medicines/
     path("medicines/", include("medisign.medicines.urls", namespace="medicines")),
     # /users/
-    path("users/", include("medisign.users.urls", namespace="users_home")),
+    path("users/", include("medisign.users.urls", namespace="users")),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

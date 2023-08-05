@@ -22,7 +22,7 @@ class User(AbstractUser):
     gender = models.CharField(blank=True, choices=GENDER_CHOICES, max_length=255)
     weight = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    birth_date = models.DateField()
+    birth_date = models.DateField(null=True)
     
     medicine = models.ManyToManyField('medicines.Medicine', blank = True, related_name='users')
     disease = models.ManyToManyField('diseases.Disease', blank = True, related_name='users')
