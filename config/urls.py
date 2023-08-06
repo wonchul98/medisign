@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
 
-    
     # /
     #path("", include("medisign.users.urls", namespace="users")),
 
@@ -16,6 +15,9 @@ urlpatterns = [
     path("medicines/", include("medisign.medicines.urls", namespace="medicines")),
     # /users/
     path("users/", include("medisign.users.urls", namespace="users")),
+    # /pharmacys/
+    path("pharmacys/", include("medisign.pharmacys.urls", namespace="pharmacys")),
+    #/admin
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
