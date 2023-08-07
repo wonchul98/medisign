@@ -89,7 +89,7 @@ LOCAL_APPS = [
     "medisign.users",
     "medisign.medicines",
     "medisign.diseases",
-    "medisign.pharmacys",
+    "medisign.pharmacies",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

@@ -15,10 +15,12 @@ urlpatterns = [
     path("medicines/", include("medisign.medicines.urls", namespace="medicines")),
     # /users/
     path("users/", include("medisign.users.urls", namespace="users")),
-    # /pharmacys/
-    path("pharmacys/", include("medisign.pharmacys.urls", namespace="pharmacys")),
+    # /pharmacies/
+    path("pharmacies/", include("medisign.pharmacies.urls", namespace="pharmacies")),
     #/admin
     path('admin/', admin.site.urls),
+    # /home
+     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
@@ -42,6 +44,7 @@ if settings.DEBUG:
             kwargs={"exception": Exception("Page not Found")},
         ),
         path("500/", default_views.server_error),
+        
     ]
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar
