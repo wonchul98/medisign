@@ -11,19 +11,16 @@ class PharmacyManager(models.Manager):
         
         def calculate_distance_to_pharmacy(pharmacy):
             return earth_radius * math.acos(
-                math.sin(lat * p) * math.sin(pharmacy.coord_x * p) +
-                math.cos(lat * p) * math.cos(pharmacy.coord_x * p) *
-                math.cos((lon - pharmacy.coord_y) * p)
+                math.sin(lat * p) * math.sin(pharmacy.coord_y * p) +  # Updated to coord_y for latitude
+                math.cos(lat * p) * math.cos(pharmacy.coord_y * p) *
+                math.cos((lon - pharmacy.coord_x) * p)               # Updated to coord_x for longitude
             )
         
         pharmacies = self.get_queryset()
         
         # Calculate distance for each pharmacy and filter those within the given distance
-        pharmacies_within_distance = [
-            (pharmacy, calculate_distance_to_pharmacy(pharmacy))
-            for pharmacy in pharmacies
-            if calculate_distance_to_pharmacy(pharmacy) <= distance_km
-        ]
+        distances = [(pharmacy, calculate_distance_to_pharmacy(pharmacy)) for pharmacy in pharmacies]
+        pharmacies_within_distance = [item for item in distances if item[1] <= distance_km]
         
         # Sort pharmacies by distance
         sorted_pharmacies = sorted(pharmacies_within_distance, key=lambda x: x[1])
@@ -42,8 +39,8 @@ class Pharmacy(models.Model):
     postal_code = models.CharField(max_length=50) # 우편번호
     address = models.TextField() # 주소
     phone_number = models.CharField(max_length=50)
-    coord_x = models.FloatField()
-    coord_y = models.FloatField()
+    coord_x = models.FloatField() #경도
+    coord_y = models.FloatField() #위도
     objects = PharmacyManager()
 
     def __str__(self):

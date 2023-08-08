@@ -1,60 +1,116 @@
-<body>
-    <div id="map" style="width:1000px;height:500px;margin-top:40px"></div>
+<html>
+    <head>
+        <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=qtyqr5m94a"></script>
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    </head>
 
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=qtyqr5m94a"></script>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const lat = parseFloat(urlParams.get('lat'));
-        const lon = parseFloat(urlParams.get('lon'));
-        const distance_km = parseFloat(urlParams.get('distance_km'));
-        con
-        // Your JavaScript Code will be here
-        var nearbyPharmaciesURL = "{% url 'pharmacies:nearby' %}";
-        var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(lat, lon), // 초기 지도 중심 위치 설정
-            zoom: 10
-        });
+    <body>
+        <div style="margin-top: 20px; margin-bottom: 10px; font-weight: bold;">
+            주변 약국
+        </div>
+        <div id="map" style="width:100%; height:80%">
+
+        </div>
         
-        // 주어진 좌표를 중심으로 근처 약국 정보 가져오기
-        function getNearbyPharmacies(lat, lon, distance_km) {
-            fetch(`${nearbyPharmaciesURL}?lat=${lat}&lon=${lon}&distance_km=${distance_km}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        console.log('First pharmacy data:', data[0]);  // 첫 번째 약국 정보 출력
-                    } else {
-                        console.log('No pharmacies found.');
+        <script>
+            $(document).ready(async function(){
+                let XY = await getLocation();
+            
+                
+                //지도를 삽입할 HTML 요소 또는 HTML 요소의 id를 지정합니다.
+                var mapDiv = document.getElementById('map'); // 'map'으로 선언해도 동일
+
+                
+                // 현재 user 위치에 pin 고정
+                var HOME_PATH = window.HOME_PATH || '.';
+                var defaultMarker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(XY.lat, XY.lng),
+                    map: map,
+                    title : '현재 user의 위치'
+                });
+                
+                
+                $.ajax({
+                    url: "/pharmacies/nearby",
+                    type: "GET",
+                    cache: false,
+                    dataType: "json",
+                    
+                    data: {"lat" : XY.lat, "lon": XY.lng, "distance_km": "1"},
+                    
+                    success: function(data) {
+                        console.log(data);
+                        var map = new naver.maps.Map('map', {
+                            center: new naver.maps.LatLng(XY.lat, XY.lng), //지도의 초기 중심 좌표
+                            zoom: 13, //지도의 초기 줌 레벨
+                            minZoom: 7, //지도의 최소 줌 레벨
+                            zoomControl: true, //줌 컨트롤의 표시 여부
+                            zoomControlOptions: { //줌 컨트롤의 옵션
+                                position: naver.maps.Position.TOP_RIGHT
+                            }
+                        });
+                        data.forEach(function(it, index){
+                            let care_institution_name = it.care_institution_name // 약국 명
+                            let address = it.address //주소
+                            let phone_number = it.phone_number// 번호
+
+                            let pharmacy_location = new naver.maps.LatLng(it.coord_y, it.coord_x);
+                            let marker = new naver.maps.Marker({
+                                map: map,
+                                position: pharmacy_location
+                            });
+                        
+                            var contentString = [
+                                    '<div class="iw_inner">',
+                                    '   <h3>'+care_institution_name+'</h3>',
+                                    '   <p>'+address+'<br />',
+                                    '       '+phone_number+'<br />',
+                                    '   </p>',
+                                    '</div>'
+                                ].join('');
+                            
+                            var infowindow = new naver.maps.InfoWindow({
+                                content: contentString
+                            });
+                            
+                            naver.maps.Event.addListener(marker, "click", function(e) {
+                                if (infowindow.getMap()) {
+                                    infowindow.close();
+                                } else {
+                                    infowindow.open(map, marker);
+                                }
+                            });
+                        
+                        infowindow.open(map, marker);
+                        });
+                        
+                    },
+                    error: function(request, status, error) {
+    
                     }
-        
-                    data.forEach(pharmacy => {
-                        addPharmacyMarker(pharmacy);
+                });
+                
+            });
+            
+            async function getLocation() {
+                let XY = new Object();
+                if(navigator.geolocation) {
+    
+                    let promise = new Promise((resolve, rejected) => {
+                        navigator.geolocation.getCurrentPosition((position) => {
+                            resolve(position);
+                        });
                     });
-                })
-                .catch(error => console.error('Error fetching pharmacies:', error));
-        }
-        
-        // 받아온 약국 정보로 마커 생성 및 지도에 표시
-        function addPharmacyMarker(pharmacy) {
-            var marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(pharmacy.coord_x, pharmacy.coord_y),
-                map: map,
-                title: pharmacy.name
-            });
-        
-            var infoWindow = new naver.maps.InfoWindow({
-                content: `<div style="width:150px;text-align:center;padding:10px;">${pharmacy.name}</div>`
-            });
-        
-            naver.maps.Event.addListener(marker, 'click', function() {
-                if (infoWindow.getMap()) {
-                    infoWindow.close();
-                } else {
-                    infoWindow.open(map, marker);
+    
+                    let position = await promise;
+                    // position.coords.latitude 위도
+                    // position.coords.longitude 경도
+                    XY.lat = position.coords.latitude;
+                    XY.lng = position.coords.longitude;
                 }
-            });
-        }
-        
-        // 예제를 위해 초기 위치를 기반으로 근처 약국 정보 가져오기
-        getNearbyPharmacies(lat, lon); // 예: 1km 반경
-    </script>
-</body>
+                return XY;            
+            }
+            
+        </script>
+    </body>
+</html>
