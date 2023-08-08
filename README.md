@@ -42,7 +42,7 @@ get, put, delete 방식으로 medicine정보 조회, 수정, 삭제
 
 get 방식으로 주변 약국 리스트 조회 (거리 순)<br><br>
 
-> /phatmacies/show_near?lat=[`위도`]&lon=[`경도`]&distance_km=[`반경(km)`]<br>
+> /phatmacies/show_near<br>
 
 주변 약국 지도 정보 html로 제공
 
