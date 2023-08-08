@@ -10,9 +10,6 @@ from .serializers import PharmacySerializer
 from .models import Pharmacy
 
 
-    
-
-
 
 class PharmacyNearbyView(APIView):
     permission_classes = [AllowAny]

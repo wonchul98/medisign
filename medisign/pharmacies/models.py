@@ -8,10 +8,28 @@ class PharmacyManager(models.Manager):
         p = math.pi / 180
         # Radius of the Earth in km
         earth_radius = 6371
+        
+        def calculate_distance_to_pharmacy(pharmacy):
+            return earth_radius * math.acos(
+                math.sin(lat * p) * math.sin(pharmacy.coord_x * p) +
+                math.cos(lat * p) * math.cos(pharmacy.coord_x * p) *
+                math.cos((lon - pharmacy.coord_y) * p)
+            )
+        
         pharmacies = self.get_queryset()
-        return [pharmacy for pharmacy in pharmacies
-                if earth_radius * math.acos(math.sin(lat * p) * math.sin(pharmacy.coord_x * p) + math.cos(lat * p) * math.cos(pharmacy.coord_x * p) *
-                                       math.cos((lon - pharmacy.coord_y) * p)) <= distance_km]
+        
+        # Calculate distance for each pharmacy and filter those within the given distance
+        pharmacies_within_distance = [
+            (pharmacy, calculate_distance_to_pharmacy(pharmacy))
+            for pharmacy in pharmacies
+            if calculate_distance_to_pharmacy(pharmacy) <= distance_km
+        ]
+        
+        # Sort pharmacies by distance
+        sorted_pharmacies = sorted(pharmacies_within_distance, key=lambda x: x[1])
+        
+        # Return only the pharmacy objects, not their distances
+        return [pharmacy[0] for pharmacy in sorted_pharmacies]
 
 class Pharmacy(models.Model):
     encrypted_care_symbol = models.CharField(max_length=255)

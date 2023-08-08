@@ -11,41 +11,41 @@ License: MIT
 
 Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
 
+## model schema
+![](medisign%20%EB%AA%A8%EB%8D%B8%20%EC%8A%A4%ED%82%A4%EB%A7%88.drawio.png) 
+
+## 배포 URL
+https://medisign-hackthon-95c791df694a.herokuapp.com/ <br>
+
+
 ## Basic Commands
 
-### Setting Up Your Users
+### User 모델<br>
 
-- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+> /users/User_list<br>
 
-- To create a **superuser account**, use this command:
+get, post 방식으로 user정보 조회, 추가<br><Br>
+> /users/User_list/[`user_id`]<br>
 
-      $ python manage.py createsuperuser
+get, put, delete 방식으로 user정보 조회, 수정, 삭제
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+### Medicine 모델<br>
+> medicines/medicine_list/<br>
 
-### Type checks
+get, post 방식으로 medicine정보 조회, 추가<br><br>
+>medicines/medicine_list/[`medicine_id`]<br>
 
-Running type checks with mypy:
+get, put, delete 방식으로 medicine정보 조회, 수정, 삭제
 
-    $ mypy medisign
+### Pharmacy 모델<br>
+> /pharmacies/nearby?lat=[`위도`]&lon=[`경도`]&distance_km=[`반경(km)`]<br>
 
-### Test coverage
+get 방식으로 주변 약국 리스트 조회 (거리 순)<br><br>
 
-To run the tests, check your test coverage, and generate an HTML coverage report:
+> /phatmacies/show_near?lat=[`위도`]&lon=[`경도`]&distance_km=[`반경(km)`]<br>
 
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
+주변 약국 지도 정보 html로 제공
 
-#### Running tests with pytest
+<br>
 
-    $ pytest
 
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading).
-
-## Deployment
-
-The following details how to deploy this application.
-"" 

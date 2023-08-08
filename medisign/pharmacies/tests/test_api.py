@@ -72,6 +72,7 @@ class PharmacyNearbyViewTest(APITestCase):
 
     def test_pharmacy_nearby_view(self):
         url = reverse('pharmacies:nearby')
+        #url = 'https://medisign-hackthon-95c791df694a.herokuapp.com/pharmacies/'
         # Assuming that your endpoint is /pharmacy-nearby/?lat=37.50&lon=127.50&distance_km=1
         url = f"{url}?lat=37.50&lon=127.50&distance_km=1"
         response = self.client.get(url)

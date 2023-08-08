@@ -1,0 +1,60 @@
+<body>
+    <div id="map" style="width:1000px;height:500px;margin-top:40px"></div>
+
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=qtyqr5m94a"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const lat = parseFloat(urlParams.get('lat'));
+        const lon = parseFloat(urlParams.get('lon'));
+        const distance_km = parseFloat(urlParams.get('distance_km'));
+        con
+        // Your JavaScript Code will be here
+        var nearbyPharmaciesURL = "{% url 'pharmacies:nearby' %}";
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(lat, lon), // 초기 지도 중심 위치 설정
+            zoom: 10
+        });
+        
+        // 주어진 좌표를 중심으로 근처 약국 정보 가져오기
+        function getNearbyPharmacies(lat, lon, distance_km) {
+            fetch(`${nearbyPharmaciesURL}?lat=${lat}&lon=${lon}&distance_km=${distance_km}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        console.log('First pharmacy data:', data[0]);  // 첫 번째 약국 정보 출력
+                    } else {
+                        console.log('No pharmacies found.');
+                    }
+        
+                    data.forEach(pharmacy => {
+                        addPharmacyMarker(pharmacy);
+                    });
+                })
+                .catch(error => console.error('Error fetching pharmacies:', error));
+        }
+        
+        // 받아온 약국 정보로 마커 생성 및 지도에 표시
+        function addPharmacyMarker(pharmacy) {
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(pharmacy.coord_x, pharmacy.coord_y),
+                map: map,
+                title: pharmacy.name
+            });
+        
+            var infoWindow = new naver.maps.InfoWindow({
+                content: `<div style="width:150px;text-align:center;padding:10px;">${pharmacy.name}</div>`
+            });
+        
+            naver.maps.Event.addListener(marker, 'click', function() {
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    infoWindow.open(map, marker);
+                }
+            });
+        }
+        
+        // 예제를 위해 초기 위치를 기반으로 근처 약국 정보 가져오기
+        getNearbyPharmacies(lat, lon); // 예: 1km 반경
+    </script>
+</body>
