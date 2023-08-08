@@ -14,6 +14,16 @@ class User(AbstractUser):
         ('F', 'Female'),
         ('C', 'Custom'),
     ]
+    BLOOD_CHOICES = [
+        ('A+', 'A Positive'),
+        ('A-', 'A Negative'),
+        ('B+', 'B Positive'),
+        ('B-', 'B Negative'),
+        ('AB+', 'AB Positive'),
+        ('AB-', 'AB Negative'),
+        ('O+', 'O Positive'),
+        ('O-', 'O Negative'),
+    ]
 
     # First and last name do not cover name patterns around the globe
     name = models.CharField(_("Name of User"), blank=True, max_length=255)
@@ -23,6 +33,7 @@ class User(AbstractUser):
     weight = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     birth_date = models.DateField(null=True)
+    blood_type = models.CharField(blank = True, choices=BLOOD_CHOICES, max_length=255)
     
     medicine = models.ManyToManyField('medicines.Medicine', blank = True, related_name='users')
     disease = models.ManyToManyField('diseases.Disease', blank = True, related_name='users')
