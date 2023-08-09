@@ -7,7 +7,7 @@ from django.views.generic import DetailView, RedirectView, UpdateView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import *
 from django.shortcuts import render
 
@@ -67,7 +67,7 @@ class UserList(APIView):
     
     
 class UserDetail(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request, user_id):
         model = User.objects.get(id = user_id)
         serializer = Userserializer(model)
@@ -75,7 +75,7 @@ class UserDetail(APIView):
     
     def put(self, request, user_id):
         model = User.objects.get(id = user_id)
-        serializer = Userserializer(data = request.data, partial=True)
+        serializer = Userserializer(instance=model, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)  

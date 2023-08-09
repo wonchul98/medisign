@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from medisign.pharmacies.models import Pharmacy
 
 class User(AbstractUser):
     """
@@ -35,6 +36,7 @@ class User(AbstractUser):
     birth_date = models.DateField(null=True)
     blood_type = models.CharField(blank = True, choices=BLOOD_CHOICES, max_length=255)
     
+    regular_pharmacy = models.ManyToManyField(Pharmacy, blank = True, related_name='users')
     medicine = models.ManyToManyField('medicines.Medicine', blank = True, related_name='users')
     disease = models.ManyToManyField('diseases.Disease', blank = True, related_name='users')
 

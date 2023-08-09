@@ -25,27 +25,34 @@ https://medisign-hackthon-95c791df694a.herokuapp.com/ <br>
 > /users/User_list<br>
 
 get, post 방식으로 user정보 조회, 추가<br><Br>
-> /users/User_list/[`user_id`]<br>
+> /users/User_list/`user_id`<br>
 
 get, put, delete 방식으로 user정보 조회, 수정, 삭제
 
 ### Medicine 모델<br>
-> medicines/medicine_list/<br>
+> /medicines/medicine_list/<br>
 
 get, post 방식으로 medicine정보 조회, 추가<br><br>
->medicines/medicine_list/[`medicine_id`]<br>
+>/medicines/medicine_list/`medicine_id`<br>
 
 get, put, delete 방식으로 medicine정보 조회, 수정, 삭제
 
 ### Pharmacy 모델<br>
-> /pharmacies/nearby?lat=[`위도`]&lon=[`경도`]&distance_km=[`반경(km)`]<br>
+> /pharmacies/nearby?lat=`위도`&lon=`경도`&distance_km=`반경(km)`
+<br>
 
 get 방식으로 주변 약국 리스트 조회 (거리 순)<br><br>
 
-> /phatmacies/show_near<br>
+> /pharmacies/show_near<br>
 
-주변 약국 지도 정보 html로 제공
+주변 약국 지도 정보 html로 제공<br><br>
 
+### 단골 약국 추가
+/users/User_list/user_id 에 put 방식으로 request<br>
+(medisign/user/tests/test.py에 샘플 코드 있음)
+
+<br><br>
+### 정확한 사용법은 `app_name`/tests/test_api.py 참고
 <br>
 
 
