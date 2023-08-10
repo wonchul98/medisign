@@ -2,12 +2,12 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import MedicineSerializer
 from .models import Medicine
 
 class MedicineList(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request):
         model = Medicine.objects.all()
         serializer = MedicineSerializer(model, many=True)
@@ -21,7 +21,7 @@ class MedicineList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MedicineDetail(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request, medicine_id):
         model = Medicine.objects.get(id=medicine_id)
         serializer = MedicineSerializer(model)

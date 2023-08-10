@@ -51,7 +51,7 @@ user_redirect_view = UserRedirectView.as_view()
 
 
 class UserList(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request):
         model = User.objects.all()
         serializer = Userserializer(model, many = True)
