@@ -39,6 +39,8 @@ class MedicineDetail(APIView):
         model = Medicine.objects.get(id=medicine_id)
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
 
 # Create your views here.
 def index(request):
