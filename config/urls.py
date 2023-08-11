@@ -17,6 +17,9 @@ urlpatterns = [
     path("users/", include("medisign.users.urls", namespace="users")),
     # /pharmacies/
     path("pharmacies/", include("medisign.pharmacies.urls", namespace="pharmacies")),
+    # /diseases/
+    path("diseases/", include("medisign.diseases.urls", namespace="diseases")),
+    
     #/admin
     path('admin/', admin.site.urls),
     # /home
