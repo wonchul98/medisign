@@ -23,21 +23,21 @@ class DiseaseList(APIView):
 
 class DiseaseDetail(APIView):
     permission_classes = [AllowAny]
-    def get(self, request, medicine_id):
-        model = Disease.objects.get(id=medicine_id)
+    def get(self, request, disease_id):
+        model = Disease.objects.get(id=disease_id)
         serializer = DiseaseSerializer(model)
         return Response(serializer.data)
 
-    def put(self, request, medicine_id):
-        model = Disease.objects.get(id=medicine_id)
+    def put(self, request, disease_id):
+        model = Disease.objects.get(id=disease_id)
         serializer = DiseaseSerializer(model, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, medicine_id):
-        model =Disease.objects.get(id=medicine_id)
+    def delete(self, request, disease_id):
+        model =Disease.objects.get(id=disease_id)
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
