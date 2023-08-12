@@ -60,8 +60,12 @@ get, put, delete 방식으로 user정보 조회, 수정, 삭제<br><br>
 
 
 ### 단골 약국 추가
-/users/User_list/user_id 에 put 방식으로 request<br>
+/users/User_list/`user_id` 에 put 방식으로 request<br>
 (medisign/user/tests/test.py에 샘플 코드 있음)
+
+## **admin**<br>
+
+> /admin<br>
 
 <br><br>
 ### 모델 별 정확한 사용법은 `app_name`/tests/test_api.py 참고
