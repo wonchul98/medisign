@@ -34,155 +34,96 @@
                 }
 
             }
-            $(document).ready(async function(){
+            $(document).ready(async function() {
 
-                let XY = await getLocation();
+                try {
+                    const userLocation = await getLocation();
+                    const regularPharmacies = await getRegularPharmaciesByUserId(userId);
             
-                
-                //지도를 삽입할 HTML 요소 또는 HTML 요소의 id를 지정합니다.
-                var mapDiv = document.getElementById('map'); // 'map'으로 선언해도 동일
-
-                let regularPharmacies = await getRegularPharmaciesByUserId(userId);
-                // 현재 user 위치에 pin 고정
-                var HOME_PATH = window.HOME_PATH || '.';
-                var defaultMarker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(XY.lat, XY.lng),
-                    map: map,
-                    title : '현재 user의 위치'
-                });
-                
-                
-                $.ajax({
-                    url: "/pharmacies/nearby",
-                    type: "GET",
-                    cache: false,
-                    dataType: "json",
-                    
-                    data: {"lat" : XY.lat, "lon": XY.lng, "distance_km": "1"},
-                    
-                    success: function(data) {
-                        console.log(data);
-                        var map = new naver.maps.Map('map', {
-                            center: new naver.maps.LatLng(XY.lat, XY.lng), //지도의 초기 중심 좌표
-                            zoom: 13, //지도의 초기 줌 레벨
-                            minZoom: 7, //지도의 최소 줌 레벨
-                            zoomControl: true, //줌 컨트롤의 표시 여부
-                            zoomControlOptions: { //줌 컨트롤의 옵션
-                                position: naver.maps.Position.TOP_RIGHT
-                            }
-                        });
-                        data.forEach(function(it, index){
-                            let care_institution_name = it.care_institution_name // 약국 명
-                            let address = it.address //주소
-                            let phone_number = it.phone_number// 번호
-                            let isRegularPharmacy = regularPharmacies.includes(parseInt(it.id));
-                            let starIcon = isRegularPharmacy ? "⭐" : "☆"; // 채워진 별과 빈 별을 나타냅니다.                        
-                            
-                            let pharmacy_location = new naver.maps.LatLng(it.coord_y, it.coord_x);
-                            let marker = new naver.maps.Marker({
-                                map: map,
-                                position: pharmacy_location
-                            });
-                        
-                            var contentString = [
+                    // Create map object only once
+                    const map = new naver.maps.Map('map', {
+                        center: new naver.maps.LatLng(userLocation.lat, userLocation.lng),
+                        zoom: 13,
+                        minZoom: 7,
+                        zoomControl: true,
+                        zoomControlOptions: {
+                            position: naver.maps.Position.TOP_RIGHT
+                        }
+                    });
+            
+                    // Setting default marker for user's location
+                    new naver.maps.Marker({
+                        position: new naver.maps.LatLng(userLocation.lat, userLocation.lng),
+                        map: map,
+                        title: '현재 user의 위치'
+                    });
+            
+                    $.ajax({
+                        url: "/pharmacies/nearby",
+                        type: "GET",
+                        cache: false,
+                        dataType: "json",
+                        data: {
+                            "lat": userLocation.lat,
+                            "lon": userLocation.lng,
+                            "distance_km": "1"
+                        },
+                        success: function(data) {
+                            data.forEach(function(it) {
+                                const care_institution_name = it.care_institution_name;
+                                const address = it.address;
+                                const phone_number = it.phone_number;
+                                const isRegularPharmacy = regularPharmacies.includes(parseInt(it.id));
+                                const pharmacy_location = new naver.maps.LatLng(it.coord_y, it.coord_x);
+            
+                                let marker;
+                                if (isRegularPharmacy) {
+                                    console.log(it.id)
+                                    marker = new naver.maps.Marker({
+                                        position: pharmacy_location,
+                                        map: map,
+                                        icon: {
+                                            url: 'https://medisign-bucket.s3.ap-northeast-2.amazonaws.com/medicine_model_pictures/sample_marker.PNG',
+                                            size: new naver.maps.Size(50, 52),
+                                            scaledSize: new naver.maps.Size(50, 52), // 추가: 이미지 크기를 조절하기 위해
+                                            origin: new naver.maps.Point(0, 0),
+                                            anchor: new naver.maps.Point(25, 26)
+                                        }
+                                    });
+                                } else {
+                                    marker = new naver.maps.Marker({
+                                        position: pharmacy_location,
+                                        map: map
+                                    });
+                                }
+            
+                                const contentString = [
                                     '<div class="iw_inner">',
-                                    '   <h3>'+care_institution_name+' <button class="star-icon" style="float:right; margin-right:5px;" data-pharmacy-id="' + it.id + '">' + starIcon + '</button></h3>',
-                                    '   <p>'+address+'<br />',
-                                    '       '+phone_number+'<br />',
-                                    //'       '+it.id+'<br />',
+                                    '   <h3>' + care_institution_name + '</h3>',
+                                    '   <p>' + address + '<br />',
+                                    '       ' + phone_number + '<br />',
                                     '   </p>',
                                     '</div>'
                                 ].join('');
-
-                            function bindStarIconClickEvent() {
-                                setTimeout(function() {
-                                    
-                                }, 100);  // 100ms 지연을 주어 DOM이 준비될 때까지 기다립니다.
-                            }
-                            
-                            var infowindow = new naver.maps.InfoWindow({
-                                content: contentString
-                            });
-                            
-                            naver.maps.Event.addListener(marker, "click", function(e) {
-                                if (infowindow.getMap()) {
-                                    infowindow.close();
-                                } else {
-                                    infowindow.open(map, marker);
-                                    bindStarIconClickEvent();
-                                }
-                            });
-                            $('button.star-icon').click(async function(e) {
-                                console.log("Star button was clicked!");
-                                
-                                let pharmacyId = $(this).attr("data-pharmacy-id");
-                                let isFilledStar = $(this).text() === "⭐";
-                                $(this).text(isFilledStar ? "☆" : "⭐");
-                                console.log(pharmacyId);
-                                // 약국을 추가할지 제거할지 결정하는 변수
-                                let action = isFilledStar ? "remove" : "add";
-                            
-                                try {
-                                    // 먼저 현재 사용자의 정보를 가져옵니다.
-                                    let userResponse = await fetch(`/users/User_list/${userId}`);
-                                    let userData = await userResponse.json();
-                            
-                                    // regular_pharmacy 배열을 가져옵니다.
-                                    let regularPharmacy = userData.regular_pharmacy || [];
- 
-                                    // action에 따라 pharmacyId를 추가하거나 제거합니다.
-                                    if(!regularPharmacy.includes(parseInt(pharmacyId))) {
-                                        console.log("add");
-                                        regularPharmacy.push(parseInt(pharmacyId));  // 여기서 parseInt()를 사용하여 정수로 변환
-                                    } else if(regularPharmacy.includes(parseInt(pharmacyId))) {
-                                        console.log("remove");
-                                        regularPharmacy = regularPharmacy.filter(id => id !== parseInt(pharmacyId));  // 여기서도 parseInt()를 사용하여 정수로 변환
-                                    }
-                                    console.log(regularPharmacy);
-                                    
-                                    let url = `/users/User_list/${userId}`;
-                                    let data = {
-                                        regular_pharmacy: regularPharmacy  // 이 부분을 수정하였습니다. 
-                                    };
-                                    console.log("전송: " , JSON.stringify(data));
-                                    let headers = {
-                                        'Content-Type': 'application/json'
-                                    };
-                            
-                                    fetch(url, {
-                                        method: 'PUT',
-                                        headers: headers,
-                                        body: JSON.stringify(data)
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        
-                                        if (data.success) {
-                                            // 성공 로직
-                                            
-                                        } else {
-                                            // 실패 로직
-                                            console.error("서버에서 오류가 발생했습니다:", data.message || "Unknown Error");
-                                        }
-                                    })
-                                    .catch(error => console.error("요청 중 오류가 발생했습니다:", error));
-                                } catch(error) { // 이 부분을 추가하였습니다.
-                                    console.error("Error during the update process:", error);
-                                }
-                            });
-                            infowindow.open(map, marker);
-                        });
-                        
-                        
-                    },
-                    error: function(request, status, error) {
-    
-                    }
-
-                });
-                
-            });
             
+                                const infowindow = new naver.maps.InfoWindow({
+                                    content: contentString
+                                });
+                                naver.maps.Event.addListener(marker, "click", function() {
+                                    infowindow.open(map, marker);
+                                });
+                            });
+                        },
+                        error: function(request, status, error) {
+                            console.error("Failed to fetch nearby pharmacies:", error);
+                        }
+                    });
+            
+                } catch (err) {
+                    console.error("An error occurred:", err);
+                }
+            
+            });
             async function getLocation() {
                 let XY = new Object();
                 if(navigator.geolocation) {
