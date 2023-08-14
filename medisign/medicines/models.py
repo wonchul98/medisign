@@ -5,8 +5,16 @@ from django.urls import reverse
 User = get_user_model()
 
 class Medicine(models.Model):
-    name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='medicines/', blank=True, null=True)
+    name = models.CharField(max_length=255, null=True)
+    image = models.ImageField(upload_to='media/medicine_pictures', null=True)
+    entpName = models.CharField(max_length=4000, null=True)
+    efcyQesitm= models.CharField(max_length=10485760, null=True)
+    useMethodQesitm= models.CharField(max_length=10485760, null=True)
+    atpnWarnQesitm= models.CharField(max_length=10485760, null=True)
+    atpnQesitm= models.CharField(max_length=10485760, null=True)
+    intrcQesitm= models.CharField(max_length=10485760, null=True)
+    seQesitm= models.CharField(max_length=10485760, null=True)
+    depositMethodQesitm= models.CharField(max_length=10485760, null=True)
     
     def __str__(self):
         return self.name

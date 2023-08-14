@@ -8,6 +8,14 @@ class MedicineSerializer(serializers.ModelSerializer):
     
     name = serializers.CharField(required=False)
     image = serializers.ImageField(required=False)
+    entpName = serializers.CharField(required=False)
+    efcyQesitm=serializers.CharField(required=False)
+    useMethodQesitm= serializers.CharField(required=False)
+    atpnWarnQesitm= serializers.CharField(required=False)
+    atpnQesitm= serializers.CharField(required=False)
+    intrcQesitm= serializers.CharField(required=False)
+    seQesitm= serializers.CharField(required=False)
+    depositMethodQesitm= serializers.CharField(required=False)
     
     class Meta:
         model = Medicine
