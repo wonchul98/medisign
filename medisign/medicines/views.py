@@ -3,8 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import MedicineSerializer
-from .models import Medicine
+from .serializers import MedicineSerializer, PrescriptionSerializer
+from .models import Medicine, Prescription
+from rest_framework import viewsets
 
 class MedicineList(APIView):
     permission_classes = [AllowAny]
@@ -41,6 +42,10 @@ class MedicineDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
+class PrescriptionViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
+    queryset = Prescription.objects.all()
+    serializer_class = PrescriptionSerializer
 
 # Create your views here.
 def index(request):

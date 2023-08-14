@@ -16,6 +16,7 @@ class MedicineSerializer(serializers.ModelSerializer):
         
 class PrescriptionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    picture = serializers.ImageField(required = False)
     medicine = serializers.PrimaryKeyRelatedField(queryset=Medicine.objects.all(), required=False)
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
@@ -24,4 +25,4 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Prescription
-        fields = ['user', 'medicine', 'prescription_date', 'duration', 'dosage_time', 'hospital']
+        fields = ['user', 'picture', 'medicine', 'prescription_date', 'duration', 'dosage_time', 'hospital']
