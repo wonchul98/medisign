@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from .models import Medicine, Prescription
+from .models import Medicine, Prescription,DosageTime
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+class DosageTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DosageTime
+        fields = ('id', 'time',)
 
 class MedicineSerializer(serializers.ModelSerializer):
     
@@ -28,7 +33,7 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     medicine = serializers.PrimaryKeyRelatedField(queryset=Medicine.objects.all(), required=False)
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
-    dosage_time = serializers.TimeField(required=False)
+    dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
     hospital = serializers.CharField(required=False, max_length=255)
     
     class Meta:
