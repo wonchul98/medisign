@@ -11,11 +11,11 @@ class MedicineList(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         model = Medicine.objects.all()
-        serializer = MedicineSerializer(model, many=True)
+        serializer = MedicineSerializer(model, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = MedicineSerializer(data=request.data)
+        serializer = MedicineSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -25,12 +25,12 @@ class MedicineDetail(APIView):
     permission_classes = [AllowAny]
     def get(self, request, medicine_id):
         model = Medicine.objects.get(id=medicine_id)
-        serializer = MedicineSerializer(model)
+        serializer = MedicineSerializer(model, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, medicine_id):
         model = Medicine.objects.get(id=medicine_id)
-        serializer = MedicineSerializer(model, data=request.data)
+        serializer = MedicineSerializer(model, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -40,6 +40,7 @@ class MedicineDetail(APIView):
         model = Medicine.objects.get(id=medicine_id)
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
     
 
 class PrescriptionViewSet(viewsets.ModelViewSet):

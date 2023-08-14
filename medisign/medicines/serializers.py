@@ -12,7 +12,7 @@ class DosageTimeSerializer(serializers.ModelSerializer):
 class MedicineSerializer(serializers.ModelSerializer):
     
     name = serializers.CharField(required=False)
-    image = serializers.ImageField(required=False)
+    image = serializers.ImageField(required=False, use_url=True)
     entpName = serializers.CharField(required=False)
     efcyQesitm=serializers.CharField(required=False)
     useMethodQesitm= serializers.CharField(required=False)
@@ -26,10 +26,11 @@ class MedicineSerializer(serializers.ModelSerializer):
         model = Medicine
         fields = '__all__'
         
+   
         
 class PrescriptionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
-    picture = serializers.ImageField(required = False)
+    image = serializers.SerializerMethodField(required = False)
     medicine = serializers.PrimaryKeyRelatedField(queryset=Medicine.objects.all(), required=False)
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
@@ -39,3 +40,6 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prescription
         fields = '__all__'
+    
+    def get_image(self, obj):
+        return self.context['request'].build_absolute_uri(obj.image.url)
