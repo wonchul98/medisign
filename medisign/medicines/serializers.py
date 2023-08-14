@@ -25,4 +25,4 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Prescription
-        fields = ['user', 'picture', 'medicine', 'prescription_date', 'duration', 'dosage_time', 'hospital']
+        fields = '__all__'

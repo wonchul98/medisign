@@ -3,8 +3,6 @@ import sys
 print(sys.path)
 from medisign.pharmacies.models import Pharmacy
 
-print("1111111111111111")
-
 def upload_data_from_excel(file_path):
     # Load the data from the Excel file
     data = pd.read_excel(file_path)
