@@ -50,13 +50,7 @@
                             position: naver.maps.Position.TOP_RIGHT
                         }
                     });
-            
-                    // Setting default marker for user's location
-                    new naver.maps.Marker({
-                        position: new naver.maps.LatLng(userLocation.lat, userLocation.lng),
-                        map: map,
-                        title: '현재 user의 위치'
-                    });
+                    
             
                     $.ajax({
                         url: "/pharmacies/nearby",
@@ -78,14 +72,14 @@
             
                                 let marker;
                                 if (isRegularPharmacy) {
-                                    console.log(it.id)
+                                    //console.log(it.id)
                                     marker = new naver.maps.Marker({
                                         position: pharmacy_location,
                                         map: map,
                                         icon: {
-                                            url: 'https://medisign-bucket.s3.ap-northeast-2.amazonaws.com/medicine_model_pictures/sample_marker.PNG',
-                                            size: new naver.maps.Size(50, 52),
-                                            scaledSize: new naver.maps.Size(50, 52), // 추가: 이미지 크기를 조절하기 위해
+                                            url: 'https://medisign-bucket.s3.ap-northeast-2.amazonaws.com/static/images/regular_marker.png',
+                                            size: new naver.maps.Size(70, 80),
+                                            scaledSize: new naver.maps.Size(70, 73), // 추가: 이미지 크기를 조절하기 위해
                                             origin: new naver.maps.Point(0, 0),
                                             anchor: new naver.maps.Point(25, 26)
                                         }
@@ -93,7 +87,14 @@
                                 } else {
                                     marker = new naver.maps.Marker({
                                         position: pharmacy_location,
-                                        map: map
+                                        map: map,
+                                        icon: {
+                                            url: 'https://medisign-bucket.s3.ap-northeast-2.amazonaws.com/static/images/default_marker.png',
+                                            size: new naver.maps.Size(55, 57),
+                                            scaledSize: new naver.maps.Size(25, 27), // 추가: 이미지 크기를 조절하기 위해
+                                            origin: new naver.maps.Point(0, 0),
+                                            anchor: new naver.maps.Point(25, 26)
+                                        }
                                     });
                                 }
             

@@ -16,12 +16,12 @@ class Medicine(models.Model):
     entpName = models.CharField(max_length=4000, null=True)
     itemSeq = models.IntegerField(null = True)
     efcyQesitm= models.CharField(max_length=10485760, null=True)
-    useMethodQesitm= models.CharField(max_length=10485760, null=True)
-    atpnWarnQesitm= models.CharField(max_length=10485760, null=True)
-    atpnQesitm= models.CharField(max_length=10485760, null=True)
-    intrcQesitm= models.CharField(max_length=10485760, null=True)
-    seQesitm= models.CharField(max_length=10485760, null=True)
-    depositMethodQesitm= models.CharField(max_length=10485760, null=True)
+    useMethodQesitm= models.CharField(max_length=10485760, null=True) #사용법
+    atpnWarnQesitm= models.CharField(max_length=10485760, null=True) #주의사항경고
+    atpnQesitm= models.CharField(max_length=10485760, null=True)#주의사항
+    intrcQesitm= models.CharField(max_length=10485760, null=True)#상호작용
+    seQesitm= models.CharField(max_length=10485760, null=True)#부작용
+    depositMethodQesitm= models.CharField(max_length=10485760, null=True)#보관법
     
     def __str__(self):
         return self.name
