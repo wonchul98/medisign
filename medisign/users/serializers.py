@@ -3,6 +3,7 @@ from .models import User
 from medisign.medicines.models import Medicine
 from medisign.pharmacies.models import Pharmacy
 from medisign.diseases.models import Disease
+from medisign.medicines.serializers import PrescriptionSerializer
 
 class Userserializer(serializers.ModelSerializer):
     
@@ -19,6 +20,14 @@ class Userserializer(serializers.ModelSerializer):
     medicine = serializers.PrimaryKeyRelatedField(many=True, queryset=Medicine.objects.all(), required=False)
     disease = serializers.PrimaryKeyRelatedField(many=True, queryset=Disease.objects.all(), required=False)
     
+    prescriptions = PrescriptionSerializer(many=True, read_only=True, required=False)
     class Meta:
         model = User
-        fields = '__all__'
+        fields = [
+            'id', 'name', 'user_name', 'profile_photo', 'gender', 'weight',
+            'height', 'birth_date', 'blood_type', 'regular_pharmacy',
+            'medicine', 'disease', 'password', 'last_login', 'is_superuser',
+            'username', 'first_name', 'last_name', 'email', 'is_staff',
+            'is_active', 'date_joined', 'groups', 'user_permissions',
+            'prescriptions'  
+        ]

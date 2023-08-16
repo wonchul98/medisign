@@ -54,11 +54,11 @@ class UserList(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         model = User.objects.all()
-        serializer = Userserializer(model, many = True)
+        serializer = Userserializer(model, many = True, context={'request': request})
         return Response(serializer.data)
     
     def post(self, request):
-        serializer = Userserializer(data = request.data)
+        serializer = Userserializer(data = request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
@@ -70,12 +70,12 @@ class UserDetail(APIView):
     permission_classes = [AllowAny]
     def get(self, request, user_id):
         model = User.objects.get(id = user_id)
-        serializer = Userserializer(model)
+        serializer = Userserializer(model, context={'request': request})
         return Response(serializer.data)
     
     def put(self, request, user_id):
         model = User.objects.get(id = user_id)
-        serializer = Userserializer(instance=model, data=request.data, partial=True)
+        serializer = Userserializer(instance=model, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)  

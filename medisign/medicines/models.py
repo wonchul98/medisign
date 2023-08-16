@@ -27,7 +27,7 @@ class Medicine(models.Model):
         return self.name
 
 class Prescription(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='prescriptions')
     image = models.ImageField(upload_to='prescription_picture/' , null = True, blank = True, default=None)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank = True, null = True) # 약 종류
     prescription_date = models.DateField(null = True, blank = True) #처방 날짜

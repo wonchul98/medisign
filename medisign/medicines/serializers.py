@@ -42,4 +42,6 @@ class PrescriptionSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def get_image(self, obj):
-        return self.context['request'].build_absolute_uri(obj.image.url)
+        if obj.image and hasattr(obj.image, 'url'):  
+            return self.context['request'].build_absolute_uri(obj.image.url)
+        return None
