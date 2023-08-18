@@ -63,10 +63,14 @@ https://medisign-hackthon-95c791df694a.herokuapp.com/
 
 - **Nearby Pharmacies** : `/pharmacies/nearby?lat=위도&lon=경도&distance_km=반경(km)`
   - **Methods**: GET
-- **Show Nearby on Map** : `/pharmacies/show_near/?user_id=user_id`
-  - **Note**: 현재 위치 기반으로 주변 약국 지도 정보 제공, 즐겨찾기된 약국 표시
 - **Add Regular Pharmacy** : `/users/User_list/user_id`
   - **Methods**: PUT
+- **Show Regular Pharmacy** : `/pharmacies/reg/user_id`
+  - **Methods**: GET  
+- **Show Nearby on Map** : `/pharmacies/show_near/?user_id=user_id`
+  - **Note**: 현재 위치 기반으로 주변 약국 지도 정보 제공, 즐겨찾기된 약국 지도상 표시
+- **Show Selected on Map** : `/pharmacies/show_select/?pharmacy_id=pharmacy_id`
+  - **Note**: 입력받은 pharmacy_id의 위치 지도상 표시
 
 ### **Disease** 모델
 
