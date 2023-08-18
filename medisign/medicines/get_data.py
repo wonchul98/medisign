@@ -91,12 +91,6 @@ for tr in tbody.find_all('tr'):
             # href 링크에서 추가 정보를 가져옴
             additional_info = get_additional_info(href)
             data_dict.update(additional_info)  # data_dict에 추가 정보를 병합
-    
-    # if data_dict:  # Ensure the dictionary has data before printing
-    #     for key, value in data_dict.items():
-    #         print(f"{key} : {value}")
-    #     print("\n" + "-"*50 + "\n")  # 각 행 사이에 구분선 추가
-    # print("============================================")
 
     
     filtered_data_info = {

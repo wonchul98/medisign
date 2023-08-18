@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Pharmacy
+import math
 
 class PharmacySerializer(serializers.ModelSerializer):
     encrypted_care_symbol = serializers.CharField(required=False)
@@ -18,3 +19,13 @@ class PharmacySerializer(serializers.ModelSerializer):
     class Meta:
         model = Pharmacy
         fields = '__all__'
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        
+        # Loop through all float fields and replace NaN with None
+        for key, value in rep.items():
+            if isinstance(value, float) and math.isnan(value):
+                rep[key] = None
+                
+        return rep

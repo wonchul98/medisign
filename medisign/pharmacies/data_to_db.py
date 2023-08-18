@@ -1,3 +1,4 @@
+#해당 명령어는 shell에서 실행해야 합니다
 import pandas as pd
 import sys
 print(sys.path)
