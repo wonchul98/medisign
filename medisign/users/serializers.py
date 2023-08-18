@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Widget
 from medisign.medicines.models import Medicine
 from medisign.pharmacies.models import Pharmacy
 from medisign.diseases.models import Disease
 from medisign.medicines.serializers import PrescriptionSerializer
+from medisign.widgets.serializers import WidgetSerializer
 
 class Userserializer(serializers.ModelSerializer):
     
@@ -21,6 +22,8 @@ class Userserializer(serializers.ModelSerializer):
     disease = serializers.PrimaryKeyRelatedField(many=True, queryset=Disease.objects.all(), required=False)
     
     prescriptions = PrescriptionSerializer(many=True, read_only=True, required=False)
+    widgets = WidgetSerializer(many=True, read_only=True, required=False)
+    
     class Meta:
         model = User
         fields = [
@@ -29,5 +32,5 @@ class Userserializer(serializers.ModelSerializer):
             'medicine', 'disease', 'password', 'last_login', 'is_superuser',
             'username', 'first_name', 'last_name', 'email', 'is_staff',
             'is_active', 'date_joined', 'groups', 'user_permissions',
-            'prescriptions'  
+            'prescriptions', 'widgets'
         ]

@@ -3,6 +3,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from medisign.pharmacies.models import Pharmacy
+from medisign.widgets.models import Widget
+import json
 
 class User(AbstractUser):
     """
@@ -40,11 +42,7 @@ class User(AbstractUser):
     medicine = models.ManyToManyField('medicines.Medicine', blank = True, related_name='users')
     disease = models.ManyToManyField('diseases.Disease', blank = True, related_name='users')
 
+
     def get_absolute_url(self) -> str:
-        """Get URL for user's detail view.
-
-        Returns:
-            str: URL for user detail.
-
-        """
+        
         return reverse("users:detail", kwargs={"username": self.username})

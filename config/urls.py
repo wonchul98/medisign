@@ -19,6 +19,8 @@ urlpatterns = [
     path("pharmacies/", include("medisign.pharmacies.urls", namespace="pharmacies")),
     # /diseases/
     path("diseases/", include("medisign.diseases.urls", namespace="diseases")),
+    # /widgets/
+    path("widgets/", include("medisign.widgets.urls", namespace="widgets")),
     
     #/admin
     path('admin/', admin.site.urls),
