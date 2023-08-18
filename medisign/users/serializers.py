@@ -9,7 +9,6 @@ from medisign.widgets.serializers import WidgetSerializer
 class Userserializer(serializers.ModelSerializer):
     
     name = serializers.CharField(required=False)
-    user_name = serializers.CharField(required=False)
     profile_photo = serializers.ImageField(required=False)
     gender = serializers.CharField(required=False)
     weight = serializers.IntegerField(required=False)
@@ -27,10 +26,10 @@ class Userserializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'name', 'user_name', 'profile_photo', 'gender', 'weight',
+            'id', 'name', 'profile_photo', 'gender', 'weight',
             'height', 'birth_date', 'blood_type', 'regular_pharmacy',
             'medicine', 'disease', 'password', 'last_login', 'is_superuser',
-            'username', 'first_name', 'last_name', 'email', 'is_staff',
-            'is_active', 'date_joined', 'groups', 'user_permissions',
+            'username', 'email', 'is_staff',
+            'is_active', 'date_joined', 'groups',
             'prescriptions', 'widgets'
         ]
