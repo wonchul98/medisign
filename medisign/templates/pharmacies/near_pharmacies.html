@@ -43,7 +43,7 @@
                     // Create map object only once
                     const map = new naver.maps.Map('map', {
                         center: new naver.maps.LatLng(userLocation.lat, userLocation.lng),
-                        zoom: 13,
+                        zoom: 18,
                         minZoom: 7,
                         zoomControl: true,
                         zoomControlOptions: {
@@ -111,8 +111,14 @@
                                     content: contentString
                                 });
                                 naver.maps.Event.addListener(marker, "click", function() {
-                                    infowindow.open(map, marker);
-                                });
+                                    if (infowindow.getMap()) {
+                                        // infowindow가 현재 지도에 표시되어 있으면 닫습니다.
+                                        infowindow.close();
+                                    } else {
+                                        // 그렇지 않으면 infowindow를 엽니다.
+                                        infowindow.open(map, marker);
+                                    }
+                                });;
                             });
                         },
                         error: function(request, status, error) {

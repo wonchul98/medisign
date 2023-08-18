@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=qtyqr5m94a"></script>
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <div id="pharmacyInfo"></div>
+        <div id="map" style="width:100%; height:80%">
+
+        </div>
+        
+        <script>
+            function getQueryParam(name) {
+                let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(window.location.href);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+            
+            // Get the pharmacy_id from the URL parameters
+            let pharmacyId = getQueryParam('pharmacy_id');
+            console.log(pharmacyId)
+            async function getPharmacyDetailsById(pharmacyId) {
+                try {
+                    let response = await fetch(`/pharmacies/detail/${pharmacyId}`);
+                    return await response.json();
+                } catch (error) {
+                    console.error("Failed to fetch pharmacy details:", error);
+                    return null;
+                }
+            }
+            
+            $(document).ready(async function() {
+                try {
+                    const pharmacyDetails = await getPharmacyDetailsById(pharmacyId);
+                    
+                    // If no details found, exit
+                    if (!pharmacyDetails) return;
+
+                    if (pharmacyDetails.coord_x == null || pharmacyDetails.coord_y == null || 
+                        isNaN(pharmacyDetails.coord_x) || isNaN(pharmacyDetails.coord_y)) {
+                        document.getElementById("pharmacyInfo").innerHTML = '<span style="color: red;">약국 위치 정보가 없습니다</span>';
+                        return; // Exit after displaying the error message
+                    }
+            
+                    const pharmacyLocation = new naver.maps.LatLng(pharmacyDetails.coord_y, pharmacyDetails.coord_x);
+                    const map = new naver.maps.Map('map', {
+                        center: pharmacyLocation,
+                        zoom: 18,
+                        minZoom: 7,
+                        zoomControl: true,
+                        zoomControlOptions: {
+                            position: naver.maps.Position.TOP_RIGHT
+                        }
+                    });
+            
+                    const marker = new naver.maps.Marker({
+                        position: pharmacyLocation,
+                        map: map,
+                        icon: {
+                            url: 'https://medisign-bucket.s3.ap-northeast-2.amazonaws.com/static/images/default_marker.png',
+                            size: new naver.maps.Size(55, 57),
+                            scaledSize: new naver.maps.Size(25, 27), 
+                            origin: new naver.maps.Point(0, 0),
+                            anchor: new naver.maps.Point(25, 26)
+                        }
+                    });
+            
+                    const contentString = [
+                        '<div class="iw_inner">',
+                        '   <h3>' + pharmacyDetails.care_institution_name + '</h3>',
+                        '   <p>' + pharmacyDetails.address + '<br />',
+                        '       ' + pharmacyDetails.phone_number + '<br />',
+                        '   </p>',
+                        '</div>'
+                    ].join('');
+            
+                    const infowindow = new naver.maps.InfoWindow({
+                        content: contentString
+                    });
+                    naver.maps.Event.addListener(marker, "click", function() {
+                        if (infowindow.getMap()) {
+                            // infowindow가 현재 지도에 표시되어 있으면 닫습니다.
+                            infowindow.close();
+                        } else {
+                            // 그렇지 않으면 infowindow를 엽니다.
+                            infowindow.open(map, marker);
+                        }
+                    });
+            
+                } catch (err) {
+                    console.error("An error occurred:", err);
+                }
+            });            
+            
+        </script>
+    </body>
+</html>
