@@ -5,5 +5,5 @@ class WidgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Widget
         fields = [
-            'text'
+            'text', 'id', 'user'
         ]

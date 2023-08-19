@@ -65,7 +65,7 @@ https://medisign-hackthon-95c791df694a.herokuapp.com/
   - **Methods**: GET
 - **Add Regular Pharmacy** : `/users/User_list/user_id`
   - **Methods**: PUT
-- **Show Regular Pharmacy** : `/pharmacies/reg/user_id`
+- **List Regular Pharmacy** : `/pharmacies/reg/user_id`
   - **Methods**: GET  
 - **Show Nearby on Map** : `/pharmacies/show_near/?user_id=user_id`
   - **Note**: 현재 위치 기반으로 주변 약국 지도 정보 제공, 즐겨찾기된 약국 지도상 표시
@@ -77,6 +77,12 @@ https://medisign-hackthon-95c791df694a.herokuapp.com/
 - **List & Create** : `/diseases/disease_list`
   - **Methods**: GET, POST
 - **Retrieve, Update & Delete** : `/diseases/disease_list/disease_id`
+  - **Methods**: GET, PUT, DELETE
+
+### **Widget** 모델
+- **List & Create** : `/widgets/widget_list`
+  - **Methods**: GET, POST
+- **Retrieve, Update & Delete** : `/widgets/widget_list/id`
   - **Methods**: GET, PUT, DELETE
 
 ### **Admin**
