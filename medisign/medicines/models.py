@@ -29,7 +29,7 @@ class Medicine(models.Model):
 class Prescription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='prescriptions')
     image = models.ImageField(upload_to='prescription_picture/' , null = True, blank = True, default=None)
-    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank = True, null = True) # 약 종류
+    medicine = models.ManyToManyField(Medicine, blank=True)  # 약 종류들
     prescription_date = models.DateField(null = True, blank = True) #처방 날짜
     duration = models.IntegerField(null=True, blank = True)  # 복용 일수
     dosage_times = models.ManyToManyField(DosageTime, blank = True) # 복용 시간 (여러개 선택 가능)
@@ -38,5 +38,4 @@ class Prescription(models.Model):
     
     def __str__(self):
         return f"{self.user.name}'s {self.medicine.name}"
-    
     

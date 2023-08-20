@@ -9,19 +9,8 @@ class DosageTimeSerializer(serializers.ModelSerializer):
         model = DosageTime
         fields = ('id', 'time',)
 
+
 class MedicineSerializer(serializers.ModelSerializer):
-    
-    name = serializers.CharField(required=False)
-    image = serializers.ImageField(required=False, use_url=True)
-    entpName = serializers.CharField(required=False)
-    efcyQesitm=serializers.CharField(required=False)
-    useMethodQesitm= serializers.CharField(required=False)
-    atpnWarnQesitm= serializers.CharField(required=False)
-    atpnQesitm= serializers.CharField(required=False)
-    intrcQesitm= serializers.CharField(required=False)
-    seQesitm= serializers.CharField(required=False)
-    depositMethodQesitm= serializers.CharField(required=False)
-    
     class Meta:
         model = Medicine
         fields = '__all__'
@@ -30,8 +19,8 @@ class MedicineSerializer(serializers.ModelSerializer):
         
 class PrescriptionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
-    image = serializers.SerializerMethodField(required = False)
-    medicine = serializers.PrimaryKeyRelatedField(queryset=Medicine.objects.all(), required=False)
+    image = serializers.SerializerMethodField(required=False)
+    medicine = serializers.StringRelatedField(many=True)  
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
     dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
