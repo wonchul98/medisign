@@ -9,7 +9,7 @@ class MedicineAdmin(admin.ModelAdmin):
     
 @admin.register(Prescription)
 class PrescriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'image', 'display_medicines', 'prescription_date', 'duration', 'display_dosage_times', 'hospital' )  # other fields you want to display
+    list_display = ['user']  # other fields you want to display
 
     def display_medicines(self, obj):
         return ", ".join([med.name for med in obj.medicine.all()])
