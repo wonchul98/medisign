@@ -22,6 +22,8 @@
             }
             
             let userId = getQueryParam('user_id');
+            let userLat = getQueryParam('lat');
+            let userLon = getQueryParam('lon');
 
             async function getRegularPharmaciesByUserId(userId) {
                 try {
@@ -37,12 +39,12 @@
             $(document).ready(async function() {
 
                 try {
-                    const userLocation = await getLocation();
+                    //const userLocation = await getLocation();
                     const regularPharmacies = await getRegularPharmaciesByUserId(userId);
-            
+                    console.log(userLat, userLon);
                     // Create map object only once
                     const map = new naver.maps.Map('map', {
-                        center: new naver.maps.LatLng(userLocation.lat, userLocation.lng),
+                        center: new naver.maps.LatLng(userLat, userLon),
                         zoom: 20,
                         minZoom: 7,
                         zoomControl: true,
@@ -58,8 +60,8 @@
                         cache: false,
                         dataType: "json",
                         data: {
-                            "lat": userLocation.lat,
-                            "lon": userLocation.lng,
+                            "lat": userLat,
+                            "lon": userLon,
                             "distance_km": "1"
                         },
                         success: function(data) {
@@ -131,7 +133,7 @@
                 }
             
             });
-            async function getLocation() {
+            {% comment %} async function getLocation() {
                 let XY = new Object();
                 if(navigator.geolocation) {
     
@@ -148,7 +150,7 @@
                     XY.lng = position.coords.longitude;
                 }
                 return XY;            
-            }
+            } {% endcomment %}
             
         </script>
     </body>
