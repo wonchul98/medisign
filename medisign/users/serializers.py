@@ -23,6 +23,10 @@ class Userserializer(serializers.ModelSerializer):
     prescriptions = PrescriptionSerializer(many=True, read_only=True, required=False)
     widgets = WidgetSerializer(many=True, read_only=True, required=False)
     
+    alarm =serializers.JSONField(required = False)
+    dosage = serializers.JSONField(required = False)
+    
+    
     class Meta:
         model = User
         fields = [
@@ -31,5 +35,5 @@ class Userserializer(serializers.ModelSerializer):
             'medicine', 'disease', 'password', 'last_login', 'is_superuser',
             'username', 'email', 'is_staff',
             'is_active', 'date_joined', 'groups',
-            'prescriptions', 'widgets'
+            'prescriptions', 'widgets', 'alarm', 'dosage'
         ]

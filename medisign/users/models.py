@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from medisign.pharmacies.models import Pharmacy
 from medisign.widgets.models import Widget
 import json
+from django.contrib.postgres.fields import ArrayField
 
 class User(AbstractUser):
     """
@@ -41,6 +42,9 @@ class User(AbstractUser):
     regular_pharmacy = models.ManyToManyField(Pharmacy, blank = True, related_name='users')
     medicine = models.ManyToManyField('medicines.Medicine', blank = True, related_name='users')
     disease = models.ManyToManyField('diseases.Disease', blank = True, related_name='users')
+    
+    alarm = ArrayField(models.JSONField(null=True, blank=True), null=True, blank=True)
+    dosage = ArrayField(models.JSONField(null=True, blank=True), null=True, blank=True)
 
 
     def get_absolute_url(self) -> str:

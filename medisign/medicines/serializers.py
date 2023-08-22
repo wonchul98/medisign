@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Medicine, Prescription,DosageTime, ItemSeq, Contraindication
+from .models import Medicine, Prescription, ItemSeq, Contraindication
 from django.contrib.auth import get_user_model
 
 
@@ -10,10 +10,10 @@ class ItemSeqSerializer(serializers.ModelSerializer):
         model = ItemSeq
         fields = ('number',)
 
-class DosageTimeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DosageTime
-        fields = ('id', 'time',)
+# class DosageTimeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = DosageTime
+#         fields = ('id', 'time',)
 
 
 class MedicineSerializer(serializers.ModelSerializer):
@@ -45,7 +45,7 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     medicine = serializers.StringRelatedField(many=True)  
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
-    dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
+    # dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
     hospital = serializers.CharField(required=False, max_length=255)
     
     class Meta:

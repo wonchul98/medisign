@@ -14,8 +14,8 @@ class PrescriptionAdmin(admin.ModelAdmin):
     def display_medicines(self, obj):
         return ", ".join([med.name for med in obj.medicine.all()])
     
-    def display_dosage_times(self, obj):
-        return ", ".join([dosage_time.name for dosage_time in obj.dosage_times.all()])
+    # def display_dosage_times(self, obj):
+    #     return ", ".join([dosage_time.name for dosage_time in obj.dosage_times.all()])
     
     display_medicines.short_description = 'Medicines'
     
