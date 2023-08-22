@@ -1,6 +1,6 @@
 # Register your models here.
 from django.contrib import admin
-from .models import Medicine, Prescription, Contraindication
+from .models import Medicine, Prescription, Contraindication, ItemSeq
 
 @admin.register(Medicine)
 class MedicineAdmin(admin.ModelAdmin):
@@ -23,4 +23,8 @@ class PrescriptionAdmin(admin.ModelAdmin):
 class ContraindicationAdmin(admin.ModelAdmin):
     list_display = ['drugNameA', 'drugNameB', 'drugNumberA', 'drugNumberA']
     search_fields = ['drugNameA', 'drugNameB', 'drugNumberA', 'drugNumberA']
+    
+@admin.register(ItemSeq)
+class ItemSeqAdmin(admin.ModelAdmin):
+    list_display = ['number']
 

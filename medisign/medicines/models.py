@@ -19,7 +19,7 @@ class DosageTime(models.Model):
 
 class Medicine(models.Model):
     name = models.CharField(max_length=255, null=True)
-    image = models.ImageField(upload_to='medicine_pictures/', null=True, blank = True, default=None)
+    image = models.URLField(max_length=500, blank=True, null=True)  # S3의 URL을 저장하기 위한 필드
     entpName = models.CharField(max_length=4000, null=True)
     itemSeq = models.ManyToManyField(ItemSeq, blank=True)
     efcyQesitm = models.TextField(null=True)
