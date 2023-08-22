@@ -111,6 +111,8 @@ def get_additional_info(link):
         image = data_url_to_image(img_src)
         file_name = generate_file_name()
         parsed_data["image"] = upload_to_s3(image, BUCKET_NAME, file_name)
+    else: 
+        parsed_data["image"] = None
 
     # for key, value in parsed_data.items():
     #         print(f"{key}: {value}")

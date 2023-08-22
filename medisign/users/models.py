@@ -35,7 +35,7 @@ class User(AbstractUser):
     gender = models.CharField(blank=True, choices=GENDER_CHOICES, max_length=255)
     weight = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    birth_date = models.DateField(null=True)
+    birth_date = models.DateField(blank = True, null=True)
     blood_type = models.CharField(blank = True, choices=BLOOD_CHOICES, max_length=255)
     
     regular_pharmacy = models.ManyToManyField(Pharmacy, blank = True, related_name='users')
