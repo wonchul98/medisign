@@ -1,8 +1,14 @@
 from rest_framework import serializers
-from .models import Medicine, Prescription,DosageTime
+from .models import Medicine, Prescription,DosageTime, ItemSeq, Contraindication
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()
+
+class ItemSeqSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemSeq
+        fields = ('number',)
 
 class DosageTimeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,10 +17,26 @@ class DosageTimeSerializer(serializers.ModelSerializer):
 
 
 class MedicineSerializer(serializers.ModelSerializer):
+    itemSeq = serializers.SerializerMethodField()
     class Meta:
         model = Medicine
-        fields = '__all__'
+        fields = (
+            'name',
+            'image',
+            'entpName',
+            'itemSeq',
+            'efcyQesitm',
+            'useMethodQesitm',
+            'atpnQesitm',
+            'intrcQesitm',
+            'seQesitm',
+            'depositMethodQesitm',
+            'ingredient',
+            'eng_ingredient',
+        )
         
+    def get_itemSeq(self, obj):
+        return [item.number for item in obj.itemSeq.all()]
    
         
 class PrescriptionSerializer(serializers.ModelSerializer):
@@ -34,3 +56,10 @@ class PrescriptionSerializer(serializers.ModelSerializer):
         if obj.image and hasattr(obj.image, 'url'):  
             return self.context['request'].build_absolute_uri(obj.image.url)
         return None
+
+
+class ContraindicationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Contraindication
+        fields = ['drugNameA', 'drugNumberA', 'ingredientNameA', 'companyNameA', 'drugNameB', 'drugNumberB', 'ingredientNameB', 'companyNameB', 'detail']

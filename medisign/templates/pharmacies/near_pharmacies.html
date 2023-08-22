@@ -19,7 +19,7 @@
                 if (!results) return null;
                 if (!results[2]) return '';
                 return decodeURIComponent(results[2].replace(/\+/g, ' '));
-            }
+            }ㄴ
             
             let userId = getQueryParam('user_id');
             let userLat = getQueryParam('lat');
@@ -41,7 +41,7 @@
                 try {
                     //const userLocation = await getLocation();
                     const regularPharmacies = await getRegularPharmaciesByUserId(userId);
-                    console.log(userLat, userLon);
+                    //console.log(userLat, userLon);
                     // Create map object only once
                     const map = new naver.maps.Map('map', {
                         center: new naver.maps.LatLng(userLat, userLon),

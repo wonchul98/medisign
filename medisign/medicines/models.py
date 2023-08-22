@@ -4,6 +4,13 @@ from django.urls import reverse
 
 User = get_user_model()
 
+class ItemSeq(models.Model):
+    number = models.BigIntegerField()
+    
+    def __str__(self):
+        return f"{self.number}"
+    
+
 class DosageTime(models.Model):
     time = models.TimeField()
     
@@ -14,14 +21,15 @@ class Medicine(models.Model):
     name = models.CharField(max_length=255, null=True)
     image = models.ImageField(upload_to='medicine_pictures/', null=True, blank = True, default=None)
     entpName = models.CharField(max_length=4000, null=True)
-    itemSeq = models.IntegerField(null = True)
-    efcyQesitm= models.CharField(max_length=10485760, null=True)
-    useMethodQesitm= models.CharField(max_length=10485760, null=True) #사용법
-    atpnWarnQesitm= models.CharField(max_length=10485760, null=True) #주의사항경고
-    atpnQesitm= models.CharField(max_length=10485760, null=True)#주의사항
-    intrcQesitm= models.CharField(max_length=10485760, null=True)#상호작용
-    seQesitm= models.CharField(max_length=10485760, null=True)#부작용
-    depositMethodQesitm= models.CharField(max_length=10485760, null=True)#보관법
+    itemSeq = models.ManyToManyField(ItemSeq, blank=True)
+    efcyQesitm = models.TextField(null=True)
+    useMethodQesitm = models.TextField(null=True)
+    atpnQesitm = models.TextField(null=True)
+    intrcQesitm = models.TextField(null=True)
+    seQesitm = models.TextField(null=True)
+    depositMethodQesitm = models.TextField(null=True)
+    ingredient = models.CharField(max_length=255, null = True) # 주성분
+    eng_ingredient = models.CharField(max_length=255, null = True) # 주성분영문명
     
     def __str__(self):
         return self.name
@@ -38,4 +46,23 @@ class Prescription(models.Model):
     
     def __str__(self):
         return f"{self.user.name}'s {self.medicine.name}"
+
+class Contraindication(models.Model):
+    # A에 대한 정보
+    drugNameA = models.CharField(max_length=255)
+    drugNumberA = models.CharField(max_length=100) # CharField를 사용했는데, 필요에 따라 다른 필드 타입으로 변경 가능
+    ingredientNameA = models.CharField(max_length=255)
+    companyNameA = models.CharField(max_length=255)
+
+    # B에 대한 정보
+    drugNameB = models.CharField(max_length=255)
+    drugNumberB = models.CharField(max_length=100) # CharField를 사용했는데, 필요에 따라 다른 필드 타입으로 변경 가능
+    ingredientNameB = models.CharField(max_length=255)
+    companyNameB = models.CharField(max_length=255)
+
+    # 상세정보
+    detail = models.TextField(null = True)
+
+    def __str__(self):
+        return f"{self.drugNameA} - {self.drugNameB}"
     

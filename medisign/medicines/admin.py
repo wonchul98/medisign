@@ -1,6 +1,6 @@
 # Register your models here.
 from django.contrib import admin
-from .models import Medicine, Prescription
+from .models import Medicine, Prescription, Contraindication
 
 @admin.register(Medicine)
 class MedicineAdmin(admin.ModelAdmin):
@@ -18,4 +18,9 @@ class PrescriptionAdmin(admin.ModelAdmin):
         return ", ".join([dosage_time.name for dosage_time in obj.dosage_times.all()])
     
     display_medicines.short_description = 'Medicines'
+    
+@admin.register(Contraindication)
+class ContraindicationAdmin(admin.ModelAdmin):
+    list_display = ['drugNameA', 'drugNameB', 'drugNumberA', 'drugNumberA']
+    search_fields = ['drugNameA', 'drugNameB', 'drugNumberA', 'drugNumberA']
 
