@@ -50,7 +50,7 @@ https://medisign-hackthon-95c791df694a.herokuapp.com/
   - **Methods**: GET, PUT, DELETE
 - **상호작용** : `/medicines/cont/medicine_id`
   - **Methods**: GET
-  - **Note**: medicine_id에 따라 병용 금기 약물 리스트 제공
+  - **Note**: 약의 표준코드 기준 병용 금기 약품 리스트 제공
 
 ### **Prescription** 모델
 

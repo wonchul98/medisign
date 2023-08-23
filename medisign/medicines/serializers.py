@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Medicine, Prescription, ItemSeq, Contraindication
+from .models import Medicine, Prescription, ItemSeq, Contraindication, MedicineImage
 from django.contrib.auth import get_user_model
 
 
@@ -63,3 +63,9 @@ class ContraindicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contraindication
         fields = ['drugNameA', 'drugNumberA', 'ingredientNameA', 'companyNameA', 'drugNameB', 'drugNumberB', 'ingredientNameB', 'companyNameB', 'detail']
+        
+
+class MedicineImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MedicineImage
+        fields = '__all__'

@@ -66,3 +66,9 @@ class Contraindication(models.Model):
     def __str__(self):
         return f"{self.drugNameA} - {self.drugNameB}"
     
+class MedicineImage(models.Model):
+    name = models.CharField(max_length=200)
+    image_hash = models.CharField(max_length=64)  # SHA-256을 사용할 경우
+    image = models.ImageField(upload_to='search_images/')
+    Prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE, related_name='medicineImages')
+    
