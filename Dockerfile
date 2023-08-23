@@ -1,5 +1,5 @@
 # 이미지의 베이스로 사용될 Python 이미지 선택
-FROM python:3.8-slim-buster
+FROM python:3.10.11
 
 # 환경변수 설정
 ENV PYTHONUNBUFFERED 1
