@@ -44,17 +44,17 @@ class MedicineSerializer(serializers.ModelSerializer):
    
         
 class PrescriptionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
-    image = serializers.SerializerMethodField(required=False)
-    medicine_names = serializers.SerializerMethodField()
-    prescription_date = serializers.DateField(required=False)
-    duration = serializers.IntegerField(required=False)
-    hospital = serializers.CharField(required=False, max_length=255)
+    # user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    # image = serializers.SerializerMethodField(required=False)
+    # medicine_names = serializers.SerializerMethodField()
+    # prescription_date = serializers.DateField(required=False)
+    # duration = serializers.IntegerField(required=False)
+    # hospital = serializers.CharField(required=False, max_length=255)
     
     class Meta:
         model = Prescription
-        #fields = '__all__'
-        fields = ['id', 'user', 'image', 'medicine_names', 'prescription_date', 'duration', 'hospital']
+        fields = '__all__'
+        # fields = ['id', 'user', 'image', 'medicine_names', 'prescription_date', 'duration', 'hospital']
     
     def get_image(self, obj):
         if obj.image and hasattr(obj.image, 'url'):  

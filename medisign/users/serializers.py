@@ -17,7 +17,7 @@ class Userserializer(serializers.ModelSerializer):
     blood_type = serializers.CharField(required=False)
     
     regular_pharmacy = serializers.PrimaryKeyRelatedField(many=True, queryset=Pharmacy.objects.all(), required=False)
-    medicine = serializers.PrimaryKeyRelatedField(many=True, queryset=Medicine.objects.all(), required=False)
+    medicine = serializers.SerializerMethodField()
     disease = serializers.PrimaryKeyRelatedField(many=True, queryset=Disease.objects.all(), required=False)
     
     prescriptions = PrescriptionSerializer(many=True, read_only=True, required=False)
@@ -37,3 +37,7 @@ class Userserializer(serializers.ModelSerializer):
             'is_active', 'date_joined', 'groups',
             'prescriptions', 'widgets', 'alarm', 'dosage'
         ]
+    
+    def get_medicine(self, obj):
+        medicines = obj.medicine.all()
+        return [medicine.name for medicine in medicines]
