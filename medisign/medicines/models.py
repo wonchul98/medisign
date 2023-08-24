@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from medisign.pharmacies.models import Pharmacy
 
 User = get_user_model()
 
@@ -41,8 +42,7 @@ class Prescription(models.Model):
     prescription_date = models.DateField(null = True, blank = True) #처방 날짜
     duration = models.IntegerField(null=True, blank = True)  # 복용 일수
     # dosage_times = models.ManyToManyField(DosageTime, blank = True) # 복용 시간 (여러개 선택 가능)
-    hospital = models.CharField(null = True, max_length=255) # 약 처방 병원
-    
+    hospital = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name='prescriptions', null = True)
     
     def __str__(self):
         return f"{self.user.name}'s {self.medicine.name}"
@@ -66,9 +66,9 @@ class Contraindication(models.Model):
     def __str__(self):
         return f"{self.drugNameA} - {self.drugNameB}"
     
-class MedicineImage(models.Model):
-    name = models.CharField(max_length=200)
-    image_hash = models.CharField(max_length=64)  # SHA-256을 사용할 경우
-    image = models.ImageField(upload_to='search_images/')
-    Prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE, related_name='medicineImages')
+# class MedicineImage(models.Model):
+#     name = models.CharField(max_length=200)
+#     image_hash = models.CharField(max_length=64)  # SHA-256을 사용할 경우
+#     image = models.ImageField(upload_to='search_images/')
+#     Prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE, related_name='medicineImages', null = True)
     

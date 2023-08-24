@@ -21,8 +21,4 @@ urlpatterns = [
     path("auth", token_views.obtain_auth_token, name = "medicine_auth-create"),   
     # /medicines/cont/1
     path("cont/<int:medicine_id>", MedicineCont.as_view(), name = "medicine_cont"),
-    # /medicines/search_medicine/
-    path('search_medicine/', views.search_medicine, name='search_medicine'),
-    # /medicines/add_medicine/
-    path('add_medicine/', views.add_medicine, name='add_medicine'),
 ]

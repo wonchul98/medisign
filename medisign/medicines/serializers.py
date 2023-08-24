@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Medicine, Prescription, ItemSeq, Contraindication, MedicineImage
+from .models import Medicine, Prescription, ItemSeq, Contraindication
 from django.contrib.auth import get_user_model
+from medisign.pharmacies.models import Pharmacy
+from medisign.pharmacies.serializers import PharmacySerializer
 
 
 User = get_user_model()
@@ -46,7 +48,7 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
     # dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
-    hospital = serializers.CharField(required=False, max_length=255)
+    hospital = PharmacySerializer(many=False, read_only=True, required=False)
     
     class Meta:
         model = Prescription
@@ -65,7 +67,7 @@ class ContraindicationSerializer(serializers.ModelSerializer):
         fields = ['drugNameA', 'drugNumberA', 'ingredientNameA', 'companyNameA', 'drugNameB', 'drugNumberB', 'ingredientNameB', 'companyNameB', 'detail']
         
 
-class MedicineImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MedicineImage
-        fields = '__all__'
+# class MedicineImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = MedicineImage
+#         fields = '__all__'
