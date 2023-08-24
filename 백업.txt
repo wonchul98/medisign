@@ -1,0 +1,6 @@
+pg_dump -U [your_local_username] -h localhost -F c [your_local_dbname] > local_db.dump
+C:\Program Files\PostgreSQL\12\bin\pg_dump -U postgres -h localhost -p 5433 -F c -b -v -f "C:/Users/Administrator/work/pharmacy_info.dump" medisign
+
+
+
+heroku pg:backups:restore 'https://medisign-bucket.s3.ap-northeast-2.amazonaws.com/dump%ED%8C%8C%EC%9D%BC/pharmacy_info.dump' DATABASE_URL --app medisign-hackthon
