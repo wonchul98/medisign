@@ -46,20 +46,24 @@ class MedicineSerializer(serializers.ModelSerializer):
 class PrescriptionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     image = serializers.SerializerMethodField(required=False)
-    medicine = serializers.StringRelatedField(many=True)  
+    medicine_names = serializers.SerializerMethodField()
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
-    # dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
     hospital = serializers.CharField(required=False, max_length=255)
     
     class Meta:
         model = Prescription
-        fields = '__all__'
+        #fields = '__all__'
+        fields = ['id', 'user', 'image', 'medicine_names', 'prescription_date', 'duration', 'hospital']
     
     def get_image(self, obj):
         if obj.image and hasattr(obj.image, 'url'):  
             return self.context['request'].build_absolute_uri(obj.image.url)
         return None
+    
+    def get_medicine_names(self, obj):
+        medicines = obj.medicine.all()
+        return [medicine.name for medicine in medicines]
 
 
 class ContraindicationSerializer(serializers.ModelSerializer):

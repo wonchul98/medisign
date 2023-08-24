@@ -124,7 +124,7 @@ base_url = "https://nedrug.mfds.go.kr/searchDrug"
 
 # 파라미터
 params = {
-    'itemName': '아로베스트정',
+    'itemName': '진세틸정',
     'indutyClassCode': 'A0', # 품목구분(의약품)
 }
 # 요청 보내기
