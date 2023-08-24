@@ -124,7 +124,7 @@ base_url = "https://nedrug.mfds.go.kr/searchDrug"
 
 # 파라미터
 params = {
-    'itemName': '타이레놀',
+    'itemName': '아로베스트정',
     'indutyClassCode': 'A0', # 품목구분(의약품)
 }
 # 요청 보내기
@@ -220,5 +220,3 @@ for tr in tbody.find_all('tr'):
         # 이미 존재하는 Medicine 객체를 사용하거나
         # 다른 로직이 필요한 경우 처리
         medicine = existing_medicine
-    
-

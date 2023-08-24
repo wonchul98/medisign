@@ -31,6 +31,7 @@ class Medicine(models.Model):
     depositMethodQesitm = models.TextField(null=True)
     ingredient = models.CharField(max_length=255, null = True) # 주성분
     eng_ingredient = models.CharField(max_length=255, null = True) # 주성분영문명
+    ocr_data = models.CharField(max_length=255, null = True)
     
     def __str__(self):
         return self.name

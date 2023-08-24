@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from .models import Medicine, Prescription, ItemSeq, Contraindication
 from django.contrib.auth import get_user_model
-from medisign.pharmacies.models import Pharmacy
-from medisign.pharmacies.serializers import PharmacySerializer
 
 
 User = get_user_model()
@@ -20,6 +18,7 @@ class ItemSeqSerializer(serializers.ModelSerializer):
 
 class MedicineSerializer(serializers.ModelSerializer):
     itemSeq = serializers.SerializerMethodField()
+    ocr_data = serializers.CharField(required = False, max_length = 255)
     class Meta:
         model = Medicine
         fields = (
@@ -35,7 +34,10 @@ class MedicineSerializer(serializers.ModelSerializer):
             'depositMethodQesitm',
             'ingredient',
             'eng_ingredient',
+            'ocr_data'
         )
+        required_fields = []  # 모든 필드에 대해 'required=False' 설정
+        extra_kwargs = {field: {'required': False} for field in required_fields}
         
     def get_itemSeq(self, obj):
         return [item.number for item in obj.itemSeq.all()]
@@ -48,7 +50,7 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     prescription_date = serializers.DateField(required=False)
     duration = serializers.IntegerField(required=False)
     # dosage_times = serializers.PrimaryKeyRelatedField(many=True, queryset=DosageTime.objects.all(), required=False)
-    hospital = PharmacySerializer(many=False, read_only=True, required=False)
+    hospital = serializers.CharField(required=False, max_length=255)
     
     class Meta:
         model = Prescription
