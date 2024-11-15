@@ -1,97 +1,108 @@
-# medisign
+# 서비스 소개
 
-INHA univ social impact hackthon - TEAM: MSG
+Medisign은 요양보호사의 알약 투약을 돕는 서비스입니다.
 
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+# 기획배경
 
+고령화 시대. 요양 보호사들의 인력은 점점 줄어들고 있습니다.
 
+1명의 요양 보호사당 담당하는 노인이 수는 점점 늘어납니다.
 
-## Table of Contents
+이에 따라 알약 오남용 수도 꾸준하게 증가합니다.
 
-- [Settings](#settings)
-- [Model Schema](#model-schema)
-- [배포 URL](#배포-url)
-- [Basic Commands](#basic-commands)
-  - [User 모델](#user-모델)
-  - [Medicine 모델](#medicine-모델)
-  - [Prescription 모델](#prescription-모델)
-  - [Pharmacy 모델](#pharmacy-모델)
-  - [Disease 모델](#disease-모델)
-  - [Admin](#admin)
-- [References](#references)
+전문 지식 없이 노인들의 투약을 돕는 서비스를 기획하였습니다.
 
-## Settings
+# 주요 기능
 
-- [Official Settings Documentation](http://cookiecutter-django.readthedocs.io/en/latest/settings.html)
+### 1.병용 금기 알약 탐지 기능
 
-## Model Schema
+### 2.알약 식별 기능
 
-![Model Schema](medisign%20%EB%AA%A8%EB%8D%B8%20%EC%8A%A4%ED%82%A4%EB%A7%88.drawio.png)
-
-## 배포 URL
-
-https://medisign-hackthon-95c791df694a.herokuapp.com/
 
 ## Basic Commands
 
 ### **User** 모델
 
-- **List & Create** : `/users/User_list`
-  - **Methods**: GET, POST
-- **Retrieve, Update & Delete** : `/users/User_list/user_id`
-  - **Methods**: GET, PUT, DELETE
+*   **List & Create** : `/users/User_list`
+
+    *   **Methods**: GET, POST
+
+*   **Retrieve, Update & Delete** : `/users/User_list/user_id`
+
+    *   **Methods**: GET, PUT, DELETE
 
 ### **Medicine** 모델
 
-- **List & Create** : `/medicines/medicine_list/`
-  - **Methods**: GET, POST
-- **Retrieve, Update & Delete** : `/medicines/medicine_list/medicine_id`
-  - **Methods**: GET, PUT, DELETE
-- **상호작용** : `/medicines/cont/medicine_id`
-  - **Methods**: GET
-  - **Note**: 약의 표준코드 기준 병용 금기 약품 리스트 제공
+*   **List & Create** : `/medicines/medicine_list/`
+
+    *   **Methods**: GET, POST
+
+*   **Retrieve, Update & Delete** : `/medicines/medicine_list/medicine_id`
+
+    *   **Methods**: GET, PUT, DELETE
+
+*   **상호작용** : `/medicines/cont/medicine_id`
+
+    *   **Methods**: GET
+    *   **Note**: 약의 표준코드 기준 병용 금기 약품 리스트 제공
 
 ### **Prescription** 모델
 
-- **List & Create** : `/medicines/prescription_list/`
-  - **Methods**: GET, POST
-- **Retrieve, Update & Delete** : `/medicines/prescription_list/prescription_id`
-  - **Methods**: GET, PUT, DELETE
-  - **Note**: `dosage_times` 필드는 `dosage_time`의 id 값의 list 형태로 제공. 예시: 09:00, 12:00, 18:00 → [19,25,37]
+*   **List & Create** : `/medicines/prescription_list/`
+
+    *   **Methods**: GET, POST
+
+*   **Retrieve, Update & Delete** : `/medicines/prescription_list/prescription_id`
+
+    *   **Methods**: GET, PUT, DELETE
+    *   **Note**: `dosage_times` 필드는 `dosage_time`의 id 값의 list 형태로 제공. 예시: 09:00, 12:00, 18:00 → [19,25,37]
 
 ### **Pharmacy** 모델
 
-- **Nearby Pharmacies** : `/pharmacies/nearby?lat=위도&lon=경도&distance_km=반경(km)`
-  - **Methods**: GET
-- **Add Regular Pharmacy** : `/users/User_list/user_id`
-  - **Methods**: PUT
-- **List Regular Pharmacy** : `/pharmacies/reg/user_id`
-  - **Methods**: GET  
-- **Show Nearby on Map** : `/pharmacies/show_near/?user_id=user_id&lat=lat&lon=lon`
-  - **Note**: 입력받은 좌표 기반으로 주변 약국 지도 정보 제공, user_id 기반의 즐겨찾기된 약국 지도상 표시
-- **Show Selected on Map** : `/pharmacies/show_select/?pharmacy_id=pharmacy_id`
-  - **Note**: 입력받은 pharmacy_id의 위치 지도상 표시
+*   **Nearby Pharmacies** : `/pharmacies/nearby?lat=위도&lon=경도&distance_km=반경(km)`
+
+    *   **Methods**: GET
+
+*   **Add Regular Pharmacy** : `/users/User_list/user_id`
+
+    *   **Methods**: PUT
+
+*   **List Regular Pharmacy** : `/pharmacies/reg/user_id`
+
+    *   **Methods**: GET
+
+*   **Show Nearby on Map** : `/pharmacies/show_near/?user_id=user_id&lat=lat&lon=lon`
+
+    *   **Note**: 입력받은 좌표 기반으로 주변 약국 지도 정보 제공, user_id 기반의 즐겨찾기된 약국 지도상 표시
+
+*   **Show Selected on Map** : `/pharmacies/show_select/?pharmacy_id=pharmacy_id`
+
+    *   **Note**: 입력받은 pharmacy_id의 위치 지도상 표시
 
 ### **Disease** 모델
 
-- **List & Create** : `/diseases/disease_list`
-  - **Methods**: GET, POST
-- **Retrieve, Update & Delete** : `/diseases/disease_list/disease_id`
-  - **Methods**: GET, PUT, DELETE
+*   **List & Create** : `/diseases/disease_list`
+
+    *   **Methods**: GET, POST
+
+*   **Retrieve, Update & Delete** : `/diseases/disease_list/disease_id`
+
+    *   **Methods**: GET, PUT, DELETE
 
 ### **Widget** 모델
-- **List & Create** : `/widgets/widget_list`
-  - **Methods**: GET, POST
-- **Retrieve, Update & Delete** : `/widgets/widget_list/id`
-  - **Methods**: GET, PUT, DELETE
+
+*   **List & Create** : `/widgets/widget_list`
+
+    *   **Methods**: GET, POST
+
+*   **Retrieve, Update & Delete** : `/widgets/widget_list/id`
+
+    *   **Methods**: GET, PUT, DELETE
 
 ### **Admin**
 
-- **Access** : `/admin`
+*   **Access** : `/admin`
 
 ## References
 
 모델 별 상세 사용법은 각 `app_name/tests/test_api.py` 파일을 참고하십시오.
-
-
